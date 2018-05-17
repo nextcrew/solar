@@ -33,10 +33,10 @@ Files are grouped structurally (each section of the app being self contained wit
 --------- index.js (module definition)
 --------- home.html (view)
 --------- home.less (styles)
---------- HomeController.js (Controller inherits from MainController)
---------- HomeController.spec.js
---------- homeDirective.js (view definition)
---------- homeRoutes.js (route definitions)
+--------- LoginController.js (Controller inherits from MainController)
+--------- LoginController.spec.js
+--------- loginDirective.js (view definition)
+--------- loginRoutes.js (route definitions)
 ------ /module2
 --------- /sub-module1
 --------- /sub-module2
@@ -99,7 +99,7 @@ $stateProvider
     .state('home', {
       url: '/',
       templateUrl: './modules/home/home.html',
-      controller: './modules/home/HomeController.js'
+      controller: './modules/home/LoginController.js'
     })
 ...
 ```

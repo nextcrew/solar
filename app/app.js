@@ -9,4 +9,9 @@ module.exports = angular.module('myApp',
     ])
     .config(require('./appConfig'))
     .constant('version', require('../package.json').version)
+    .factory("Auth", ["$firebaseAuth",
+        function($firebaseAuth) {
+            return $firebaseAuth();
+        }
+    ])
     .run(require('./common/common-init.js'));

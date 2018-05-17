@@ -1,0 +1,121 @@
+<div class="ui addEquipment modal">
+    <div class="header">Dodawanie Sprzętu</div>
+    <div class="scrolling content">
+        <form name="vm.newEquipmentForm" class="ui form">
+            <div class="field required">
+                <label>Nazwa</label>
+                <input type="text" name="first-name" ng-model="vm.newEquipment.name" required>
+            </div>
+            <div class="field required">
+                <label>Typ</label>
+                <select class="ui dropdown" name="typ-lozka"  ng-model="vm.newEquipment.typ" required placeholder="Wybierz typ">
+                    <option value="Leżące">Leżące</option>
+                    <option value="Stojące">Stojące</option>
+                </select>
+            </div>
+            <div class="field required">
+                <label>Ilość minut</label>
+                <input type="number" name="minuty" ng-model="vm.newEquipment.minuty" required>
+            </div>
+            <div class="field required">
+                <label>Cena</label>
+                <input type="number" name="cena" ng-model="vm.newEquipment.cena" required>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.newEquipmentForm.$invalid}">
+            Dodaj
+        </div>
+    </div>
+</div>
+
+<div class="ui editEquipment modal">
+    <div class="header">Aktualizacja Sprzętu</div>
+    <div class="scrolling content">
+        <form name="vm.editEquipmentForm" class="ui form">
+            <div class="field required">
+                <label>Nazwa</label>
+                <input type="text" name="first-name" ng-model="vm.editedEquipment.name" required>
+            </div>
+            <div class="field required">
+                <label>Typ</label>
+                <select class="ui dropdown edited" name="typ-lozka" ng-model="vm.editedEquipment.typ" required>
+                    <option value="Leżące">Leżące</option>
+                    <option value="Stojące">Stojące</option>
+                </select>
+            </div>
+            <div class="field required">
+                <label>Ilość minut</label>
+                <input type="number" name="minuty" ng-model="vm.editedEquipment.minuty" required>
+            </div>
+            <div class="field required">
+                <label>Cena</label>
+                <input type="number" name="cena" ng-model="vm.editedEquipment.cena" required>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.editEquipmentForm.$invalid}">
+            Zaktualizuj
+        </div>
+    </div>
+</div>
+
+<div ng-if="!vm.loaded" class="ui grid centered padded">
+    <div class="middle aligned column">
+<div class="ui active massive centered inline loader"></div>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="twelve wide column">
+        <div class="ui raised segment">
+        <div class="ui fluid transparent input">
+            <input ng-model="vm.search" type="text" placeholder="Wyszukaj sprzęt....">
+            <i class="fa fa-search"></i>
+        </div>
+        </div>
+    </div>
+    <div class="two wide middle aligned column">
+        <button ng-click="vm.addEquipment()" class="ui icon teal button">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="column">
+<table class="ui single line fixed striped table">
+    <thead>
+    <tr>
+        <th>Nazwa</th>
+        <th>Typ</th>
+        <th>Ilość pozostałych minut</th>
+        <th>Cena</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="eq in vm.equipment | filter: vm.search">
+        <td><a class="link teal" href="#">{{eq.name}}</a></td>
+        <td>{{eq.typ}}</td>
+        <td>{{eq.minuty}}</td>
+        <td>{{eq.cena}}</td>
+        <td>
+            <button ng-click="vm.editEquipment(eq)" class="ui icon blue button">
+            <i class="fa fa-pencil"></i>
+        </button>
+            <button ng-click="vm.removeEquipment(eq)" class="ui icon red button">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+    </div>
+</div>

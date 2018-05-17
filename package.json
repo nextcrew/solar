@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/goodbomb/angular-gulp-browserify-starter"
   },
-  "license" : "MIT",
+  "license": "MIT",
   "authors": "Ben Scott <bscott@tekalstudios.com>",
   "private": false,
   "engines": {
@@ -72,11 +72,13 @@
     "sinon": "^1.16.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.4.0"
+    "watchify": "^3.4.0",
+    "angularfire": "^2.3.0"
   },
   "dependencies": {
     "connect": "^3.4.0",
     "express": "^4.13.3",
-    "proxy-middleware": "^0.14.0"
+    "proxy-middleware": "^0.14.0",
+    "semantic-ui-angular-jquery": "^0.2.4"
   }
 }

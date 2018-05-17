@@ -56,7 +56,8 @@ var filePath = {
             dest: './dist/images/'
         },
         fonts: {
-            src: ['./libs/font-awesome/fonts/*'],
+            src: [
+                './libs/semantic/dist/themes/default/assets/fonts/*'],
             dest: './dist/fonts/'
         }
     },
@@ -74,13 +75,25 @@ var filePath = {
             './libs/bootstrap/dist/js/bootstrap.js',
             './libs/domready/ready.js',
             './libs/lodash/lodash.js',
-            './libs/restangular/dist/restangular.js'
+            './libs/restangular/dist/restangular.js',
+            './libs/semantic/dist/semantic.js',
+            './libs/semantic-ui-angular-jquery/angular-semantic-ui.js',
+            './libs/semantic-ui-calendar/dist/calendar.js',
+            './libs/timetable.js/dist/scripts/timetable.js',
+            './libs/moment/min/moment.min.js',
+            './libs/angular-moment-picker/dist/angular-moment-picker.js',
+            './libs/angular-ui-notification/dist/angular-ui-notification.js'
+
         ]
     },
     vendorCSS: {
         src: [
-            './libs/bootstrap/dist/css/bootstrap.css', // v3.1.1
-            './libs/font-awesome/css/font-awesome.css' // v4.1.0
+            './libs/semantic/dist/semantic.css',
+            './libs/font-awesome/css/font-awesome.css', // v4.1.0
+            './libs/semantic-ui-calendar/dist/calendar.css',
+            './libs/timetable.js/dist/styles/timetablejs.css',
+            './libs/angular-moment-picker/dist/angular-moment-picker.css',
+            './libs/angular-ui-notification/dist/angular-ui-notification.css'
         ]
     },
     copyIndex: {

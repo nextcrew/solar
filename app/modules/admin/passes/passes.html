@@ -1,0 +1,149 @@
+<div class="ui addpass modal">
+    <div class="header">Dodawanie Klienta</div>
+    <div class="scrolling content">
+        <form name="vm.newCustomerForm" class="ui form">
+            <div class="field required">
+                <label>Imię</label>
+                <input type="text" name="first-name" ng-model="vm.newCustomer.name" required>
+            </div>
+            <div class="field required">
+                <label>Nazwisko</label>
+                <input type="text" name="last-name" ng-model="vm.newCustomer.surname" required>
+            </div>
+            <div class="field required">
+                <label>Adres</label>
+                <input type="text" name="adress" ng-model="vm.newCustomer.address" required>
+            </div>
+            <div class="field required">
+                <label>Email</label>
+                <input type="text" name="email" ng-model="vm.newCustomer.email" required>
+            </div>
+            <div class="field required" id="date-time-new-customer">
+                <label>Data Urodzenia</label>
+                <input type="text" name="birthday" ng-model="vm.newCustomer.birthday" >
+            </div>
+            <div class="field required">
+                <label>Telefon</label>
+                <input type="number" name="tel" ng-model="vm.newCustomer.telephone" required maxlength="9" >
+            </div>
+            <div class="field ">
+                <div class="ui checkbox">
+                    <input type="checkbox" ng-model="vm.newCustomer.ma_karnet" name="Karnet">
+                    <label>Założyć karnet</label>
+                </div>
+            </div>
+            <div class="field required" ng-show="vm.newCustomer.ma_karnet">
+                <label>Wybierz typ karnetu</label>
+                <select class="ui dropdown karnet" name="typ-karnetu" required>
+                    <option ng-repeat="karnet in vm.settings" value="{{karnet.name}}">{{karnet.name}} / {{karnet.minuty}} min</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.newCustomerForm.$invalid}">
+            Dodaj
+        </div>
+    </div>
+</div>
+
+<div class="ui editcustomer modal">
+    <div class="header">Dodawanie Klienta</div>
+    <div class="scrolling content">
+        <form name="vm.editCustomerForm" class="ui form">
+            <div class="field required">
+                <label>Imię</label>
+                <input type="text" name="first-name" ng-model="vm.editedCustomer.name" required>
+            </div>
+            <div class="field required">
+                <label>Nazwisko</label>
+                <input type="text" name="last-name" ng-model="vm.editedCustomer.surname" required>
+            </div>
+            <div class="field required">
+                <label>Adres</label>
+                <input type="text" name="adress" ng-model="vm.editedCustomer.address" required>
+            </div>
+            <div class="field required">
+                <label>Email</label>
+                <input type="text" name="email" ng-model="vm.editedCustomer.email" required>
+            </div>
+            <div class="field required" id="date-time-edit-customer">
+                <label>Data Urodzenia</label>
+                <input type="text" name="birthday" value="{{vm.editedCustomer.birthday}}" >
+            </div>
+            <div class="field required">
+                <label>Telefon</label>
+                <input type="number" name="tel" ng-model="vm.editedCustomer.telephone" required maxlength="9" >
+            </div>
+            <div class="field">
+                <div class="ui checkbox disabled">
+                    <input type="checkbox" ng-model="vm.editedCustomer.ma_karnet" name="Karnet" disabled>
+                    <label>Posiada Karnet</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.editCustomerForm.$invalid}">
+            Zaktualizuj
+        </div>
+    </div>
+</div>
+
+<div ng-if="!vm.loaded" class="ui grid centered padded">
+    <div class="middle aligned column">
+<div class="ui active massive centered inline loader"></div>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="twelve wide column">
+        <div class="ui raised segment">
+        <div class="ui fluid transparent input">
+            <input ng-model="vm.search" type="text" placeholder="Wyszukaj klienta....">
+            <i class="fa fa-search"></i>
+        </div>
+        </div>
+    </div>
+    <div class="two wide middle aligned column">
+        <button ng-click="vm.addPass()" class="ui icon teal button">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="column">
+<table class="ui single line fixed striped table">
+    <thead>
+    <tr>
+        <th>Klient</th>
+        <th>Rodzaj</th>
+        <th>Data założenia</th>
+        <th>Wykorzystane minuty</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="customer in vm.customers | filter: vm.search" ng-if="customer.ma_karnet">
+        <td><a class="link teal" href="#">{{customer.name}} {{customer.surname}} {{customer.address}}</a></td>
+        <td>{{customer.karnet.typ}}</td>
+        <td>{{vm.dateFormat(customer.karnet.data_zalozenia)}}</td>
+        <td>{{customer.karnet.wykorzystane}}</td>
+        <td>
+            <button  class="ui icon blue button">
+            <i class="fa fa-pencil"></i>
+        </button>
+            <button  class="ui icon red button">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+    </div>
+</div>

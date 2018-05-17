@@ -1,0 +1,32 @@
+<div ng-if="!vm.loaded" class="ui grid centered padded">
+    <div class="middle aligned column">
+<div class="ui active massive centered inline loader"></div>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="column padded">
+        <button ng-click="vm.addEquipment()" class="ui icon teal button right floated middle aligned">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="ui large header">Karnety
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui segment">
+            <div class="ui ten wide column">
+            <div class="ui relaxed divided list">
+                <div class="item" ng-repeat="karnet in vm.settings">
+                    <div class="content">
+                        <div class="right floated content">
+                            <button ng-click="vm.removeEquipment(karnet)" class="ui icon red button">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        </div>
+                        <p class="header">{{karnet.name}}</p>
+                        <div class="description">{{karnet.minuty}} min</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

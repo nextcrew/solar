@@ -3,6 +3,7 @@
 module.exports = angular.module('modules',
     [
         require('./home').name,
-        require('./pages').name // Used for static content pages like "About", "Privacy Policy", "404", etc.
+        require('./login').name,
+        require('./admin').name
     ])
     .controller('MainCtrl', require('./MainController'));

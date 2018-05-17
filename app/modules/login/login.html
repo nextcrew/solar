@@ -1,0 +1,33 @@
+<div class="ui grid centered">
+    <div class="row">
+<div class="modules-login-view column login-app">
+    <h2 class="ui teal image header">
+
+        <div class="content">
+            <img src="http://37.233.101.108/solarking.png" class="image">
+        </div>
+    </h2>
+    <form class="ui large form">
+        <div class="ui stacked segment">
+            <div class="field">
+                <div class="ui left input">
+                    <input type="text" name="email" placeholder="Użytkownik" ng-model="vm.username">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left input">
+                    <input type="password" name="password" placeholder="Hasło" ng-model="vm.password">
+                </div>
+            </div>
+            <div class="ui fluid large blue submit button" ng-click="vm.login();">Login</div>
+        </div>
+
+        <div class="ui error message"></div>
+
+    </form>
+    <div class="ui message">
+        Nie masz konta? <a href="#">Zarejestruj się</a>
+    </div>
+</div>
+    </div>
+</div>

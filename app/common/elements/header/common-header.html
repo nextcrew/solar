@@ -1,21 +1,41 @@
-<header class="header">
-    <nav class="navbar navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" ui-sref="home">myApp</a>
+<div class="ui basic modal">
+    <div class="content">
+        <p>Czy napewno chcesz się wylogować?</p>
+    </div>
+    <div class="actions">
+        <div class="ui red basic cancel inverted button">
+            Nie
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
-            <li ui-sref-active="active"><a ui-sref="pages.about">About</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+        <div class="ui green ok inverted button">
+            Tak
+        </div>
+    </div>
+</div>
+<div class="ui fixed middle aligned two column centered padded grid">
+<div class="row">
+  <div class="two wide column blue" style="height:65px">
+          <h4 class="ui center aligned header">
+              SolarKing
+          </h4>
+  </div>
+  <div class="fourteen wide column blue" style="background-color:#2d3038!important">
+      <div class="ui grid">
+      <div class="eight wide middle aligned column">
+              <div class="ui small fluid transparent input">
+                  <input type="text" name="email" placeholder="Szukaj..." ng-model="vm.username">
+              </div>
       </div>
-    </nav>
-</header>
+      <div class="right floated right aligned five wide column">
+          <span style="font-size:bold">{{vm.user.email}}</span>
+          <img class="ui mini avatar image" src="https://farm3.static.flickr.com/2010/2110721622_2c15433541_m.jpg">
+          <div class="ui dropdown">
+              <i class="fa fa-arrow-down"></i>
+              <div class="menu">
+                  <div class="item" data-value="logout" ng-click="vm.logout()">Wyloguj</div>
+              </div>
+          </div>
+      </div>
+      </div>
+  </div>
+</div>
+</div>

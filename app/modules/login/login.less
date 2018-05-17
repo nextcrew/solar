@@ -1,17 +1,14 @@
 /* =======================================================================
-    App Layout
+    Style References
 ======================================================================= */
-
-body {
-    background-color:#f7f7f7;
-}
-body > .grid {
-    height: 100%;
-}
+@import (reference) "../../common/styles/custom_mixins.less";
+@import (reference) "../../common/styles/custom_variables.less";
 
 
 /* =======================================================================
-    LESS file imports
+    Module Styles
 ======================================================================= */
-@import "common/common.less";
-@import "modules/modules.less";
+
+.login-app {
+  max-width: 450px;
+}

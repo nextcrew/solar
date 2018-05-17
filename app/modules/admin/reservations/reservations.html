@@ -1,0 +1,68 @@
+<div class="ui addReservation modal">
+    <div class="header">Dodawanie Wizyty</div>
+    <div class="scrolling content">
+        <form name="vm.newReservationForm" class="ui form">
+            <div class="field required">
+                <label>Klient</label>
+            <div class="ui fluid category search reservations_customers">
+                    <input class="prompt" type="text" placeholder="Wyszukaj klienta..." name="klient" required>
+                <div class="results"></div>
+            </div>
+            </div>
+            <div class="field required">
+                <label>Lóżko</label>
+            <select class="ui dropdown add_lozko" name="lozko">
+                <option value="">Wybierz Lóżko</option>
+                <option ng-repeat="equip in vm.equipment" value="{{equip.$id}}">{{equip.name}} / {{equip.typ}}</option>
+            </select>
+            </div>
+            <div class="field required time-reservation" moment-picker="vm.newReservation.start" locale="pl" format="x" min-view="day" max-view="minute" min-date="vm.startDate">
+                <label>Godzina ropoczęcia</label>
+                <input type="text" name="start" ng-model="vm.newReservation.start" name="start">
+            </div>
+            <div class="field required time-end-reservation" moment-picker="vm.newReservation.end" locale="pl" format="x" min-view="day" max-view="minute" min-date="vm.newReservation.start">
+                <label>Godzina Zakonczenia</label>
+                <input type="text" name="end" ng-model="vm.newReservation.end" name="end">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.newReservationForm.$invalid}">
+            Dodaj
+        </div>
+    </div>
+</div>
+
+<div ng-if="!vm.loaded" class="ui grid centered padded">
+    <div class="middle aligned column">
+<div class="ui active massive centered inline loader"></div>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="column padded">
+        <button ng-click="vm.createReservation()" class="ui icon teal button right floated middle aligned">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="ui large header">Wizyty
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui segment">
+            <div class="ui ten sixteen column">
+                <div class="ui input">
+                    <input type="text" placeholder="Wybierz Dzień" name="end" ng-model="vm.startDate" moment-picker="vm.startDate" locale="pl" format="DD-MM-YYYY" start-view="day" max-view="day">
+                </div>
+                    <select class="ui dropdown lozko">
+                        <option value="">Wszystkie Lóżka</option>
+                        <option ng-repeat="equip in vm.equipment" value="{{equip.name}}">{{equip.name}} / {{equip.typ}}</option>
+                    </select>
+
+                </div>
+            <div class="ui ten sixteen column">
+            <div class="timetable"></div>
+            </div>
+        </div>
+    </div>
+</div>
