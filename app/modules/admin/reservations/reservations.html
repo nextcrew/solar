@@ -49,19 +49,38 @@
         <div class="ui large header">Wizyty
         </div>
         <div class="ui divider"></div>
-        <div class="ui segment">
-            <div class="ui ten sixteen column">
+        <div class="ui grid">
+            <div class="ui sixteen wide column">
                 <div class="ui input">
                     <input type="text" placeholder="Wybierz Dzień" name="end" ng-model="vm.startDate" moment-picker="vm.startDate" locale="pl" format="DD-MM-YYYY" start-view="day" max-view="day">
                 </div>
-                    <select class="ui dropdown lozko">
-                        <option value="">Wszystkie Lóżka</option>
-                        <option ng-repeat="equip in vm.equipment" value="{{equip.name}}">{{equip.name}} / {{equip.typ}}</option>
-                    </select>
-
                 </div>
-            <div class="ui ten sixteen column">
-            <div class="timetable"></div>
+            <div class="ui sixteen wide column">
+                <div class="timetable-container">
+                    <div class="ui grid">
+                        <div class="ui two wide column">
+                        </div>
+                        <div class="ui fourteen wide column timetable-equip-table">
+                            <div class="timetable-equip-container" ng-repeat="equip in vm.equipment" style="width:{{100/vm.equipment.length}}%">{{equip.name}}</div>
+                        </div>
+                    </div>
+                    <div class="ui grid" style="height:100%">
+                        <div class="timeline-indicator" style="top:{{vm.percentage}}%">
+                        </div>
+
+                        <div class="ui two wide column">
+                            <div class="timetable-time-axis-container" ng-repeat="hour in vm.hoursArray" style="height:{{100/vm.hoursArray.length}}%">
+                                {{hour}}:00
+                            </div>
+                        </div>
+                        <div class="ui fourteen wide column timetable-equip-table with-stripes">
+                            <div class="timetable-equip-container" ng-repeat="equip in vm.equipment" style="width:{{100/vm.equipment.length}}%">
+                                <div class="timetable-time-axis-inside" ng-repeat="hour in vm.hoursArray" style="height:{{100/vm.hoursArray.length}}%">
+                                    {{hour}}:00
+                                </div>
+                            </div>
+                        </div>
+                </div>
             </div>
         </div>
     </div>

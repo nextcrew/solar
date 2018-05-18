@@ -6,7 +6,7 @@ function adminRoutes($stateProvider) {
         name: 'admin',
         abstract: true,  // This makes it so that the url for this route doesn't actually resolve
         url: '/admin',
-        template: '<common-header></common-header><div class="ui grid"><div class="two wide column"><admin-menu></admin-menu></div><div class="fourteen wide column"><div ui-view></div></div>', // This injects a new ui-view that the about page directive is injected into
+        template: '<common-header></common-header><div class="ui grid centered"><div class="fourteen wide column"><div ui-view></div></div>', // This injects a new ui-view that the about page directive is injected into
         controller: 'AdminCtrl',
         resolve: {
         // controller will not be loaded until $requireSignIn resolves
