@@ -75,8 +75,13 @@
                         </div>
                         <div class="ui fourteen wide column timetable-equip-table with-stripes">
                             <div class="timetable-equip-container" ng-repeat="equip in vm.equipment" style="width:{{100/vm.equipment.length}}%">
-                                <div class="timetable-time-axis-inside" ng-repeat="hour in vm.hoursArray" style="height:{{100/vm.hoursArray.length}}%">
-                                    {{hour}}:00
+                                <div class="timetable-time-axis-inside" ng-repeat="hour in vm.momentHoursArray" style="height:{{100/vm.momentHoursArray.length}}%">
+                                    <div class="ui raised segment" ng-repeat="reservat in hour.resevations" ng-if="reservat.equipment.name === equip.name" style="text-align:left" ng-class="vm.getReservationClass(reservat)">
+                                        <h2 class="ui tiny header">
+                                            {{reservat.customer.name}} {{reservat.customer.surname}}
+                                            <div class="sub header">{{reservat.customer.telephone}}</div>
+                                        </h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>

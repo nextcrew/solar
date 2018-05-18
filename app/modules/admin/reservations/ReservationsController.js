@@ -9,10 +9,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     console.log(vm.reservations);
 
     vm.hoursArray = _.range(9, 20);
-    vm.momentHoursArray = [];
-    _.each(vm.hoursArray,function(hour){
-        vm.momentHoursArray.push(moment.utc(hour*3600*1000).format('HH:mm'));
-    });
+
 
     vm.equipment = $firebaseArray(vm.equipRef);
     console.log(vm.equipment);
@@ -42,6 +39,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
 
     vm.createReservation = createReservation;
     vm.calculateTimeBar = calculateTimeBar;
+    vm.getReservationClass = getReservationClass;
 
 
     $scope.$watch(function(){
@@ -73,6 +71,10 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     }
 
     function prepareData(filter){
+        vm.momentHoursArray = [];
+        _.each(vm.hoursArray,function(hour){
+            vm.momentHoursArray.push({hour:moment.utc(hour*3600*1000).format('HH:mm'),hourString:hour , resevations:[]});
+        });
         var data = moment();
         if (filter) data = filter;
 
@@ -84,11 +86,25 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
         _.each(vm.reservations,function(reservation){
             var dummydata = moment(parseInt(reservation.start)).format();
             if(moment(data).isSame(dummydata, 'day')){
-                var customer = _.find(vm.customers,{'$id':reservation.customer});
-                var equipment = _.find(vm.equipment,{'$id':reservation.lozko});
+                var reserevationString =_.find(vm.momentHoursArray, function(hour){
+                    var dummy = moment().hour(hour.hourString);
+                    return moment(dummydata).hours() === dummy.hours();
+                });
+
+                if (reserevationString){
+                    var customer = _.find(vm.customers,{'$id':reservation.customer});
+                    var equipment = _.find(vm.equipment,{'$id':reservation.lozko});
+                    reserevationString.resevations.push({customer:customer, equipment:equipment ,reservation:reservation})
+                }
+
             }
         });
 
+    }
+
+
+    function getReservationClass(reservation){
+        return 'red';
     }
 
     function createReservation(){
@@ -107,7 +123,6 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
                     start:null,
                     end:null
                 };
-                $('.timetable').empty();
                 prepareData();
             }
         }).modal('show');
