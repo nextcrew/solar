@@ -6,13 +6,26 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
     vm.fromNow = fromNow;
     vm.init = init;
     vm.bumpStep = bumpStep;
-    vm.openCheck = openCheck;
     vm.cancel = cancel;
     vm.accept = accept;
     vm.logs = Logs.getLog().reverse();
     vm.startDate = moment().format('HH:mm');
     vm.endDate = false;
     vm.confirmation = {};
+    vm.searchConfig = {
+        searchFields:[
+            'name','surname'
+        ],
+        fields: {
+            title : 'name',
+            description: 'surname',
+            price:'address'
+        },
+        onSelect:function(result, response){
+            vm.wizytaConfig.customer = result.$id;
+            return true;
+        }
+    };
     vm.config = {
         gotowka:'gotowka',
         karnet:'karnet'
@@ -25,7 +38,7 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
 
     vm.stepActive = 1;
 
-    vm.wizytaConfig ={
+    vm.wizytaConfig = {
         anonim:false,
         customer:false,
         lozko:false
@@ -33,6 +46,7 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
 
     vm.customerref = firebase.database().ref().child("customers");
     vm.customers = $firebaseArray(vm.customerref);
+    console.log(vm.customers);
 
     vm.reservationRef = firebase.database().ref().child("Reservations");
     vm.reservations = $firebaseArray(vm.reservationRef );
@@ -55,20 +69,6 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
     }
 
     function init(){
-        $('.wizyta_customers').search({
-            source: vm.customers,
-            searchFields:[
-                'name','surname'
-            ],
-            fields: {
-                title : 'name',
-                description: 'surname',
-                price:'address'
-            },
-            onSelect:function(result, response){
-                vm.wizytaConfig.customer = result.$id;
-            }
-        });
 
     }
 
@@ -110,11 +110,6 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
 
     },10);
 
-    function openCheck(){
-        // $('.ui.radio.checkbox').checkbox({onChecked: function(value) {
-        //     console.log(value);
-        // }});
-    }
 
     function cancel(){
         vm.wizytaConfig ={
@@ -132,6 +127,11 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
         var end = vm.coolDownDateConfig;
         var startDate = vm.startDateConfig;
         if (vm.wizytaConfig.customer){
+            if (vm.platnosc == 2){
+                var customer = vm.customers.$getRecord(vm.confirmation.customer[0].$id);
+                customer.karnet.wykorzystane = customer.karnet.wykorzystane + vm.czasOpalania;
+                vm.customers.$save(customer);
+            }
             var dummyReservation = {
                 customer:vm.confirmation.customer[0].$id,
                 end: end,
