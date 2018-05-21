@@ -6,13 +6,11 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     vm.equipRef = firebase.database().ref().child("Equipment");
     vm.reservationRef = firebase.database().ref().child("Reservations");
     vm.reservations = $firebaseArray(vm.reservationRef );
-    console.log(vm.reservations);
 
     vm.hoursArray = _.range(9, 20);
 
 
     vm.equipment = $firebaseArray(vm.equipRef);
-    console.log(vm.equipment);
     vm.customerref = firebase.database().ref().child("customers");
     vm.customers = $firebaseArray(vm.customerref);
     vm.selectedCustomer = false;
@@ -40,6 +38,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     vm.createReservation = createReservation;
     vm.calculateTimeBar = calculateTimeBar;
     vm.getReservationClass = getReservationClass;
+    vm.formatReservationTimeStamp = formatReservationTimeStamp;
 
 
     $scope.$watch(function(){
@@ -59,6 +58,9 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
 
 
     //////////////////
+    function formatReservationTimeStamp(timestamp){
+        return moment(parseInt(timestamp)).format('HH:mm');
+    }
 
     function calculateTimeBar(){
         var startDate = moment().hour(vm.hoursArray[0]).minute(0).valueOf();
@@ -104,7 +106,20 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
 
 
     function getReservationClass(reservation){
-        return 'red';
+        switch (reservation.reservation.status){
+            case 'Nowa':
+                return 'teal';
+                break;
+
+            case 'Wykonana':
+                return 'green';
+                break;
+
+            case 'Stara':
+                return 'red';
+                break;
+        }
+
     }
 
     function createReservation(){
