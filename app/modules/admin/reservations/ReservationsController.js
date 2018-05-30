@@ -39,6 +39,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     vm.calculateTimeBar = calculateTimeBar;
     vm.getReservationClass = getReservationClass;
     vm.formatReservationTimeStamp = formatReservationTimeStamp;
+    vm.calculateHourPosition = calculateHourPosition;
 
 
     $scope.$watch(function(){
@@ -96,7 +97,8 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
                 if (reserevationString){
                     var customer = _.find(vm.customers,{'$id':reservation.customer});
                     var equipment = _.find(vm.equipment,{'$id':reservation.lozko});
-                    reserevationString.resevations.push({customer:customer, equipment:equipment ,reservation:reservation})
+                    var style = calculateHourPosition(reservation);
+                    reserevationString.resevations.push({customer:customer, equipment:equipment ,reservation:reservation , style:style})
                 }
 
             }
@@ -121,6 +123,20 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
         }
 
     }
+
+    function calculateHourPosition(reservation){
+        var full = 3600000;
+        var start_position = parseInt(reservation.start);
+
+        var end_position = parseInt(reservation.end);
+        var Height = ((end_position - start_position) / full) * 100;
+        var Top = (moment(parseInt(reservation.start)).minutes()/60)*100;
+        return {
+            top:Top+'%',
+            height:Height+'%'
+        }
+
+    };
 
     function createReservation(){
         vm.startDate = moment();

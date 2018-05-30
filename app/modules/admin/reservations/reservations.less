@@ -58,11 +58,20 @@
 }
 
 .reservation {
+    padding:0;
+    text-align:center;
+    overflow:hidden;
+    transition: all ease-in-out .2s;
   .reservation-edit-button {
     display:none
   }
 }
 .reservation:hover {
+    padding:unset!important;
+    text-align:left!important;
+    overflow:unset;
+    height:revert;
+    transition: all ease-in-out .2s;
   .reservation-edit-button {
     display:block
   }

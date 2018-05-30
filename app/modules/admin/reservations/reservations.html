@@ -76,9 +76,9 @@
                         <div class="ui fourteen wide column timetable-equip-table with-stripes">
                             <div class="timetable-equip-container" ng-repeat="equip in vm.equipment" style="width:{{100/vm.equipment.length}}%">
                                 <div class="timetable-time-axis-inside" ng-repeat="hour in vm.momentHoursArray" style="height:{{100/vm.momentHoursArray.length}}%">
-                                    <div class="ui raised segment reservation" ng-repeat="reservat in hour.resevations" ng-if="reservat.equipment.name === equip.name" style="text-align:left" ng-class="vm.getReservationClass(reservat)">
+                                    <div class="ui raised segment reservation" ng-repeat="reservat in hour.resevations" ng-if="reservat.equipment.name === equip.name" style="text-align:left" ng-class="vm.getReservationClass(reservat)" ng-style="{'height':reservat.style.height,'top':reservat.style.top}" >
                                         <h2 class="ui tiny header">
-                                            {{reservat.customer.name}} {{reservat.customer.surname}}
+                                            {{reservat.customer.name || 'Anonimowy Klient'}} {{reservat.customer.surname}}
                                             <div class="sub header">{{reservat.customer.telephone}}</div>
                                             <div class="sub orange header" style="text-align:right">{{vm.formatReservationTimeStamp(reservat.reservation.start)}} - {{vm.formatReservationTimeStamp(reservat.reservation.end)}}</div>
                                         </h2>
