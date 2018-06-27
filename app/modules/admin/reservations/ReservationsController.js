@@ -145,6 +145,8 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
         $('.ui.addReservation.modal').modal({
             closable  : false,
             onApprove : function() {
+                vm.newReservation.start = vm.newReservation.start.valueOf();
+                vm.newReservation.end = vm.newReservation.end.valueOf();
                 vm.reservations.$add(vm.newReservation);
                 Logs.addLog('Dodawanie', 'Dodano nową rezerwacje');
                 vm.newReservation = {

@@ -1,7 +1,6 @@
 'use strict';
 
 function adminRoutes($stateProvider) {
-
     var admin = {
         name: 'admin',
         abstract: true,  // This makes it so that the url for this route doesn't actually resolve
@@ -91,6 +90,19 @@ function adminRoutes($stateProvider) {
         }
     };
 
+    var userprofile = {
+        name: 'admin.profile',
+        url: '/profile', // The ^ character makes this url override the parent url
+        template: '<div userprofile-view></div>',
+        params: { profile: null},
+        data: {
+            moduleClasses: 'passes',
+            pageClasses: 'passes',
+            pageTitle: 'User profile',
+            pageDescription: 'Some description.'
+        }
+    };
+
     $stateProvider.state(admin);
     $stateProvider.state(dashboard);
     $stateProvider.state(customer);
@@ -98,6 +110,7 @@ function adminRoutes($stateProvider) {
     $stateProvider.state(settings);
     $stateProvider.state(reservations);
     $stateProvider.state(passes);
+    $stateProvider.state(userprofile);
 
 }
 

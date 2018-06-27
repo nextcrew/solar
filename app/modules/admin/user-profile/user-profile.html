@@ -1,0 +1,62 @@
+<div ng-if="!vm.loaded" class="ui grid centered padded">
+    <div class="middle aligned column">
+<div class="ui active massive centered inline loader"></div>
+    </div>
+</div>
+<div ng-if="vm.loaded" class="ui grid centered padded">
+    <div class="column padded">
+        <div class="ui large header">{{vm.profile.name}} {{vm.profile.surname}}</div>
+        <div class="ui divider"></div>
+        <div class="ui segment">
+            <div class="ui ten wide column">
+                <div class="ui grid">
+                    <div class="ui four wide column">
+                        <h2 class="ui header">
+                            <i class="address card outline icon"></i>
+                            <div class="content">
+                                Adres
+                                <div class="sub header">Dane adresowe użytkownika</div>
+                            </div>
+                        </h2>
+                        <div class="ui divider"></div>
+                        <div class="ui list">
+                            <div class="item">{{vm.profile.address}}</div>
+                            <div class="item">{{vm.profile.birthday}}</div>
+                            <div class="item">{{vm.profile.email}}</div>
+                            <div class="item">{{vm.profile.telephone}}</div>
+                        </div>
+                    </div>
+                    <div class="ui four wide column">
+                        <h2 class="ui header">
+                            <i class="clock outline icon"></i>
+                            <div class="content">
+                                Wizyty
+                                <div class="sub header">Ostatnie wizyty użytkownika</div>
+                            </div>
+                        </h2>
+                        <div class="ui celled list">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Snickerdoodle</div>
+                                    An excellent companion
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Poodle</div>
+                                    A poodle, its pretty basic
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Paulo</div>
+                                    He's also a dog
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

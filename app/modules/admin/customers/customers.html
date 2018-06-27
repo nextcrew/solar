@@ -24,7 +24,7 @@
             </div>
             <div class="field required">
                 <label>Telefon</label>
-                <input type="number" name="tel" ng-model="vm.newCustomer.telephone" required maxlength="9" >
+                <input type="number" name="tel" ng-model="vm.newCustomer.telephone" required maxlength="9">
             </div>
             <div class="field ">
                 <div class="ui checkbox">
@@ -130,7 +130,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="customer in vm.customers | filter: vm.search">
-        <td><a class="link teal" href="#">{{customer.name}}</a></td>
+        <td><a class="link teal" ui-sref="admin.profile({profile:customer})">{{customer.name}}</a></td>
         <td>{{customer.surname}}</td>
         <td>{{customer.address}}</td>
         <td ng-if="customer.karnet">Tak</td>

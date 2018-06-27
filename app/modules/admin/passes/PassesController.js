@@ -16,7 +16,6 @@ function PassesCtrl($scope , $firebaseArray , Logs) {
         }
     });
 
-    console.log(vm.passes);
 
 
 

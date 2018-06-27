@@ -8,6 +8,7 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
     vm.bumpStep = bumpStep;
     vm.cancel = cancel;
     vm.accept = accept;
+    vm.checkPassValidity = checkPassValidity;
     vm.logs = Logs.getLog().reverse();
     vm.startDate = moment().format('HH:mm');
     vm.endDate = false;
@@ -46,7 +47,6 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
 
     vm.customerref = firebase.database().ref().child("customers");
     vm.customers = $firebaseArray(vm.customerref);
-    console.log(vm.customers);
 
     vm.reservationRef = firebase.database().ref().child("Reservations");
     vm.reservations = $firebaseArray(vm.reservationRef );
@@ -60,6 +60,9 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
         }
     });
 
+    vm.settingsRef = firebase.database().ref().child("Settings");
+    vm.settings = $firebaseArray(vm.settingsRef);
+
 
 
 
@@ -69,6 +72,15 @@ function DashboardCtrl($scope, Logs , $firebaseArray , Notifications) {
     }
 
     function init(){
+
+    }
+
+    function checkPassValidity(karnetType, wykorzystane, danawizyta){
+        var typKarnetu = _.find(vm.settings,{'name':karnetType})
+        if(!_.isEmpty(typKarnetu)){
+            return typKarnetu.minuty > wykorzystane+danawizyta;
+        }
+        return false;
 
     }
 

@@ -11,20 +11,20 @@
             </div>
             <div class="field required">
                 <label>Lóżko</label>
-            <select class="ui dropdown add_lozko" name="lozko">
+            <select class="ui dropdown add_lozko" name="lozko" required>
                 <option value="">Wybierz Lóżko</option>
                 <option ng-repeat="equip in vm.equipment" value="{{equip.$id}}">{{equip.name}} / {{equip.typ}}</option>
             </select>
             </div>
-            <div class="field required time-reservation" moment-picker="vm.newReservation.start" locale="pl" format="x" min-view="day" max-view="minute" min-date="vm.startDate">
+            <div class="field required time-reservation" >
                 <label>Godzina ropoczęcia</label>
-                <input type="text" name="start" ng-model="vm.newReservation.start" name="start">
+                <input type="text" name="start" ng-model="vm.newReservation.start " name="start" moment-picker="vm.newReservation.start" locale="pl" format="LLL" min-view="day" max-view="minute" min-date="vm.startDate" required>
             </div>
-            <div class="field required time-end-reservation" moment-picker="vm.newReservation.end" locale="pl" format="x" min-view="day" max-view="minute" min-date="vm.newReservation.start">
+            <div class="field required time-end-reservation" >
                 <label>Godzina Zakonczenia</label>
-                <input type="text" name="end" ng-model="vm.newReservation.end" name="end">
+                <input type="text" name="end" ng-model="vm.newReservation.end" name="end" moment-picker="vm.newReservation.end" locale="pl" format="LLL" min-view="day" max-view="minute" min-date="vm.newReservation.start" required>
             </div>
-        </form>
+
     </div>
     <div class="actions">
         <div class="ui red deny button">
@@ -34,6 +34,7 @@
             Dodaj
         </div>
     </div>
+    </form>
 </div>
 
 <div ng-if="!vm.loaded" class="ui grid centered padded">

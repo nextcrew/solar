@@ -6,7 +6,8 @@ module.exports = angular.module('modules.admin', [
         require('./equipment').name,
         require('./settings').name,
         require('./reservations').name,
-        require('./passes').name
+        require('./passes').name,
+        require('./user-profile').name
     ])
     .config(require('./adminRoutes'))
     .controller('AdminCtrl', require('./AdminController'));
