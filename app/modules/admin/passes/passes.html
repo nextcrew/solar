@@ -1,99 +1,58 @@
 <div class="ui addpass modal">
-    <div class="header">Dodawanie Klienta</div>
+    <div class="header">Dodawanie karnetu</div>
     <div class="scrolling content">
-        <form name="vm.newCustomerForm" class="ui form">
-            <div class="field required">
-                <label>Imię</label>
-                <input type="text" name="first-name" ng-model="vm.newCustomer.name" required>
-            </div>
-            <div class="field required">
-                <label>Nazwisko</label>
-                <input type="text" name="last-name" ng-model="vm.newCustomer.surname" required>
-            </div>
-            <div class="field required">
-                <label>Adres</label>
-                <input type="text" name="adress" ng-model="vm.newCustomer.address" required>
-            </div>
-            <div class="field required">
-                <label>Email</label>
-                <input type="text" name="email" ng-model="vm.newCustomer.email" required>
-            </div>
-            <div class="field required" id="date-time-new-customer">
-                <label>Data Urodzenia</label>
-                <input type="text" name="birthday" ng-model="vm.newCustomer.birthday" >
-            </div>
-            <div class="field required">
-                <label>Telefon</label>
-                <input type="number" name="tel" ng-model="vm.newCustomer.telephone" required maxlength="9" >
-            </div>
-            <div class="field ">
-                <div class="ui checkbox">
-                    <input type="checkbox" ng-model="vm.newCustomer.ma_karnet" name="Karnet">
-                    <label>Założyć karnet</label>
+        <form name="nowykarnet" class="ui form">
+            <div class="ui negative icon message" ng-if="vm.error">
+                <i class="thumbs down icon icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Błąd
+                    </div>
+                    <p>Klient posiada już karnet w systemie</p>
                 </div>
             </div>
-            <div class="field required" ng-show="vm.newCustomer.ma_karnet">
-                <label>Wybierz typ karnetu</label>
-                <select class="ui dropdown karnet" name="typ-karnetu" required>
-                    <option ng-repeat="karnet in vm.settings" value="{{karnet.name}}">{{karnet.name}} / {{karnet.minuty}} min</option>
-                </select>
+            <div class="field required">
+                <label>Klient</label>
+                <div class="ui fluid category search wizyta_customers">
+                    <sm-search model="vm.nowyKarnet.customer" local="vm.customers" placeholder="Wyszukaj klienta..." name="klient" settings="vm.searchConfig" on-results-add="false" required></sm-search>
+                    <div class="results"></div>
+                </div>
             </div>
-        </form>
+            <div class="field required">
+                <sm-dropdown class="selection" model="vm.typ" items="vm.settings" label="item.name" value="item.name" default-text="'Wybierz typ karnetu'" required></sm-dropdown>
+            </div>
     </div>
     <div class="actions">
         <div class="ui red deny button">
             Anuluj
         </div>
-        <div class="ui green positive button" ng-class="{'disabled': vm.newCustomerForm.$invalid}">
+        <div class="ui green positive button" ng-class="{'disabled': nowykarnet.$invalid || vm.error}">
             Dodaj
         </div>
+        </form>
     </div>
 </div>
 
-<div class="ui editcustomer modal">
-    <div class="header">Dodawanie Klienta</div>
+<div class="ui editpass modal">
+    <div class="header">Edycja karnetu</div>
+
     <div class="scrolling content">
-        <form name="vm.editCustomerForm" class="ui form">
-            <div class="field required">
-                <label>Imię</label>
-                <input type="text" name="first-name" ng-model="vm.editedCustomer.name" required>
-            </div>
-            <div class="field required">
-                <label>Nazwisko</label>
-                <input type="text" name="last-name" ng-model="vm.editedCustomer.surname" required>
-            </div>
-            <div class="field required">
-                <label>Adres</label>
-                <input type="text" name="adress" ng-model="vm.editedCustomer.address" required>
-            </div>
-            <div class="field required">
-                <label>Email</label>
-                <input type="text" name="email" ng-model="vm.editedCustomer.email" required>
-            </div>
-            <div class="field required" id="date-time-edit-customer">
-                <label>Data Urodzenia</label>
-                <input type="text" name="birthday" value="{{vm.editedCustomer.birthday}}" >
-            </div>
-            <div class="field required">
-                <label>Telefon</label>
-                <input type="number" name="tel" ng-model="vm.editedCustomer.telephone" required maxlength="9" >
-            </div>
-            <div class="field">
-                <div class="ui checkbox disabled">
-                    <input type="checkbox" ng-model="vm.editedCustomer.ma_karnet" name="Karnet" disabled>
-                    <label>Posiada Karnet</label>
-                </div>
-            </div>
-        </form>
+        <form name="editpassform" class="ui form">
+        <div class="field required">
+            <sm-dropdown class="selection" model="vm.editedCustomer.karnet.typ" items="vm.settings" label="item.name" value="item.name" default-text="'Wybierz typ karnetu'" required></sm-dropdown>
+        </div>
+
     </div>
+    </form>
     <div class="actions">
         <div class="ui red deny button">
             Anuluj
         </div>
-        <div class="ui green positive button" ng-class="{'disabled': vm.editCustomerForm.$invalid}">
-            Zaktualizuj
+        <div class="ui green positive button" ng-class="{'disabled': editpassform.$invalid}">
+            Odnów
         </div>
     </div>
+
 </div>
 
 <div ng-if="!vm.loaded" class="ui grid centered padded">
@@ -125,6 +84,7 @@
         <th>Rodzaj</th>
         <th>Data założenia</th>
         <th>Wykorzystane minuty</th>
+        <th>Pozostało minut</th>
         <th>Akcje</th>
     </tr>
     </thead>
@@ -134,11 +94,12 @@
         <td>{{customer.karnet.typ}}</td>
         <td>{{vm.dateFormat(customer.karnet.data_zalozenia)}}</td>
         <td>{{customer.karnet.wykorzystane}}</td>
+        <td>{{vm.calculateRemain(customer)}}</td>
         <td>
-            <button  class="ui icon blue button">
+            <button class="ui icon blue button" ng-click="vm.editPass(customer)">
             <i class="fa fa-pencil"></i>
         </button>
-            <button  class="ui icon red button">
+            <button class="ui icon red button" ng-click="vm.removePass(customer)">
                 <i class="fa fa-times"></i>
             </button>
         </td>

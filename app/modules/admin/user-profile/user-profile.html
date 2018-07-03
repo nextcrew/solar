@@ -31,26 +31,14 @@
                             <i class="clock outline icon"></i>
                             <div class="content">
                                 Wizyty
-                                <div class="sub header">Ostatnie wizyty użytkownika</div>
+                                <div class="sub header">Ostatnie trzy wizyty użytkownika</div>
                             </div>
                         </h2>
                         <div class="ui celled list">
-                            <div class="item">
+                            <div class="item" ng-repeat="item in vm.getUserReservation(vm.profile);">
                                 <div class="content">
-                                    <div class="header">Snickerdoodle</div>
-                                    An excellent companion
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">Poodle</div>
-                                    A poodle, its pretty basic
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">Paulo</div>
-                                    He's also a dog
+                                    <div class="header">{{ item.start | date: 'dd-MM-yyyy'}}</div>
+                                    {{ item.start | date: 'HH:mm'}} - {{ item.end | date: 'HH:mm'}}
                                 </div>
                             </div>
                         </div>

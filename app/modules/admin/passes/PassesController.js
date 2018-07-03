@@ -4,46 +4,62 @@ function PassesCtrl($scope , $firebaseArray , Logs) {
     var vm = this;
     vm.loaded = true;
     vm.addPass = addPass;
-    vm.editCustomer = editCustomer;
+    vm.editPass = editPass;
     vm.removeCustomer = removeCustomer;
     vm.dateFormat = dateFormat;
+    vm.calculateRemain = calculateRemain;
+    vm.removePass = removePass;
     vm.customerref = firebase.database().ref().child("customers");
     vm.customers = $firebaseArray(vm.customerref);
-
-    vm.passes = _.each(vm.customers , function(customer){
-        if (customer.ma_karnet){
-            return customer;
-        }
-    });
-
-
-
+    vm.error = false;
+    vm.nowyKarnet = {};
 
     ///Settings
 
     vm.settingsRef = firebase.database().ref().child("Settings");
     vm.settings = $firebaseArray(vm.settingsRef);
 
-
-
-
-
     ////
+
+    vm.searchConfig = {
+        searchFields:[
+            'name','surname'
+        ],
+        fields: {
+            title : 'name',
+            description: 'surname',
+            price:'address'
+        },
+        onSelect:function(result, response){
+            vm.error = result.ma_karnet;
+            vm.userid = result.$id;
+            return true;
+        }
+    };
+
+
+
+    function calculateRemain(customer){
+        if (customer.ma_karnet){
+            return _.find(vm.settings, { 'name':customer.karnet.typ}).minuty - customer.karnet.wykorzystane;
+        }
+        return '';
+    }
 
     function addPass(){
 
         $('.ui.addpass.modal').modal({
             closable  : false,
             onApprove : function() {
-                if(vm.newCustomer.ma_karnet){
-                    vm.newCustomer.karnet = vm.dummyKarnet;
-                    vm.newCustomer.test = [{
-                        test:'test'
-                    }];
-                }
-                vm.customers.$add(vm.newCustomer);
-                vm.newCustomer = {};
-                Logs.addLog('Dodawanie', 'Dodano użytkownika do systemu');
+                vm.nowyKarnet = vm.customers.$getRecord(vm.userid);
+                vm.nowyKarnet.ma_karnet = true;
+                vm.nowyKarnet.karnet = {
+                    'data_zalozenia': new Date().getTime(),
+                    'wykorzystane':0,
+                    'typ':vm.typ
+                };
+                vm.customers.$save(vm.nowyKarnet);
+                Logs.addLog('Dodawanie', 'Dodano nowy karnet do systemu dla klienta ' +vm.nowyKarnet.name+' '+vm.nowyKarnet.surname);
             }
         }).modal('show');
 
@@ -64,28 +80,31 @@ function PassesCtrl($scope , $firebaseArray , Logs) {
             });
     }
 
-    function editCustomer(customer){
+    function editPass(customer){
         vm.editedCustomer = customer;
-
-        $('.ui.editcustomer.modal').modal({
+        $('.ui.editpass.modal').modal({
             closable  : false,
             onApprove : function() {
+                vm.editedCustomer.karnet.data_zalozenia = new Date().getTime();
+                vm.editedCustomer.karnet.wykorzystane = 0;
                 vm.customers.$save(vm.editedCustomer);
+                Logs.addLog('Edycja', 'Edytowano karnet dla klienta ' +vm.editedCustomer.name+' '+vm.editedCustomer.surname);
                 vm.editedCustomer = {};
+
             }
         }).modal('show');
+    }
 
-
-        $('#date-time-edit-customer').calendar({
-            type: 'date',
-            onChange: function (date, text, mode) {
-                vm.editedCustomer.birthday = text;
-            }
-        });
+    function removePass(customer){
+        delete customer.karnet;
+        delete customer.ma_karnet;
+        vm.customers.$save(customer);
     }
 
     function removeCustomer(customer){
+        Logs.addLog('Usuniecie', 'Usunięto karnet dla klienta ' +customer.name+' '+customer.surname);
         vm.customers.$remove(customer);
+
     }
 
     function dateFormat(date){
