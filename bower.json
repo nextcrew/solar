@@ -33,7 +33,8 @@
     "semantic-ui-calendar": "^0.0.8",
     "timetable.js": "timetable#^0.6.2",
     "angular-moment-picker": "moment-picker#^0.10.1",
-    "angular-ui-notification": "^0.3.6"
+    "angular-ui-notification": "^0.3.6",
+    "angular-modal-service": "^0.13.0"
   },
   "resolutions": {
     "angular": "1.3.14",

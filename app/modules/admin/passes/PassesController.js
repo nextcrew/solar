@@ -1,8 +1,10 @@
 'use strict';
 
-function PassesCtrl($scope , $firebaseArray , Logs) {
+function PassesCtrl($scope , $firebaseArray , Logs , ModalService) {
     var vm = this;
     vm.loaded = true;
+    console.log(ModalService);
+    vm.showModal = showModal;
     vm.addPass = addPass;
     vm.editPass = editPass;
     vm.removeCustomer = removeCustomer;
@@ -38,6 +40,19 @@ function PassesCtrl($scope , $firebaseArray , Logs) {
     };
 
 
+    function showModal(){
+        ModalService.showModal({
+            template: '<div class="ui basic modal uuuu"><div class="content"><p>Czy napewno chcesz się wylogować?</p></div><div class="actions"><div class="ui red basic cancel inverted button"></div><div class="ui green ok inverted button">Tak</div></div></div>',
+            controller: function ($scope, close) {
+                $scope.dismissModal = function (result) {
+                    close(result, 200); // close, but give 200ms for bootstrap to animate
+                };
+            }
+        }).then(function (modal) {
+            //console.log(modal.element.show());
+            modal.element.modal().modal('show');
+        });
+    }
 
     function calculateRemain(customer){
         if (customer.ma_karnet){
@@ -112,5 +127,5 @@ function PassesCtrl($scope , $firebaseArray , Logs) {
     }
 }
 
-PassesCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs'];
+PassesCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs' , 'ModalService'];
 module.exports = PassesCtrl;

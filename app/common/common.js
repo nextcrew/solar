@@ -19,8 +19,7 @@ require('timetable.js');
 require('moment');
 require('angular-moment-picker');
 require('angular-ui-notification');
-
-
+require('angular-modal-service');
 
 
 module.exports = angular.module('common',
@@ -36,6 +35,7 @@ module.exports = angular.module('common',
         'moment-picker',
         'ui-notification',
         'semantic-ui',
+        'angularModalService',
         require('./elements/header').name,
         require('./elements/footer').name,
         require('./elements/adminMenu').name,
