@@ -1,11 +1,12 @@
 'use strict';
 
-function CustomerCtrl($scope , $firebaseArray , Logs) {
+function CustomerCtrl($scope , $firebaseArray , Logs , CONSTANTS, ModalService) {
     var vm = this;
     vm.loaded = true;
     vm.addCustomer = addCustomer;
     vm.editCustomer = editCustomer;
     vm.removeCustomer = removeCustomer;
+    vm.removeModal = removeModal;
     var date = new Date().getTime();
     vm.dummyKarnet = {
         typ:'Mini',
@@ -77,7 +78,28 @@ function CustomerCtrl($scope , $firebaseArray , Logs) {
     function removeCustomer(customer){
         vm.customers.$remove(customer);
     }
+
+    function removeModal(data){
+        ModalService.showModal({
+            appendElement:  $('.ui .dimmer .modals'),
+            template: CONSTANTS.modalTemplates.remove,
+            controller: function ($scope, close) {
+                $scope.dismissModal = function (result) {
+                    close(result, 200);
+                };
+            }
+        }).then(function (modal) {
+            $(modal.element).modal({closable:false}).modal('show');
+            modal.close.then(function(result) {
+                if (result){
+                    removeCustomer(data);
+                }
+            });
+        });
+    }
+
+
 }
 
-CustomerCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs'];
+CustomerCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs' , 'CONSTANTS' , 'ModalService'];
 module.exports = CustomerCtrl;

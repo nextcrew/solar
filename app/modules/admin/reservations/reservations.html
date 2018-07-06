@@ -2,7 +2,13 @@
     <div class="header">Dodawanie Wizyty</div>
     <div class="scrolling content">
         <form name="vm.newReservationForm" class="ui form">
-            <div class="field required">
+            <div class="field ">
+                <div class="ui checkbox">
+                    <input type="checkbox" ng-model="vm.newReservation.anonim" name="Anonimowy">
+                    <label>Anonimowy klient</label>
+                </div>
+            </div>
+            <div class="field required" ng-class="{'disabled':vm.newReservation.anonim}">
                 <label>Klient</label>
             <div class="ui fluid category search reservations_customers">
                     <input class="prompt" type="text" placeholder="Wyszukaj klienta..." name="klient" required>
@@ -36,6 +42,72 @@
     </div>
     </form>
 </div>
+
+
+<div class="ui editReservation fullscreen modal">
+    <div class="header">Edycja rezerwacji</div>
+    <div class="scrolling content">
+        <form name="vm.editReservationForm" class="ui form">
+            <div class="ui info icon message" ng-if="vm.edytowanaRezerwacja.status === 'Wykonana'">
+                <i class="hand point right outline icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Ważne
+                    </div>
+                    <p>Zmiana statusu rezerwacji na wykonana spowoduję obciążenie klienta minutami jeżeli zostanie wybrana opcja zapłaty karnetem</p>
+                </div>
+            </div>
+
+            <div class="field required">
+                <label>Status</label>
+                <sm-dropdown class="selection" model="vm.edytowanaRezerwacja.status" items="vm.statuses" label="item.name" value="item.name" default-text="'Wybierz Status'"></sm-dropdown>
+            </div>
+            <div class="field required">
+                <label>Lóżko</label>
+                <sm-dropdown class="selection" model="vm.edytowanaRezerwacja.lozko" items="vm.equipment" label="item.name" value="item.$id" default-text="'Wybierz Lozko'"></sm-dropdown>
+            </div>
+            <h4 class="ui dividing header" ng-init="vm.platnosc = 1"></h4>
+            <div class="ui form" ng-if="vm.copiedModel.customer && vm.edytowanaRezerwacja.status === 'Wykonana'">
+                <div class="inline fields">
+                    <label for="platnosc">Płatność:</label>
+                    <div class="field">
+                        <sm-radio class="ui checkbox" model="vm.platnosc" name="platnosc" label="Gotówka" value="1" ></sm-radio>
+
+                    </div>
+                    <div class="field" ng-if="vm.copiedModel.customer.ma_karnet">
+                        <sm-radio class="ui checkbox" model="vm.platnosc" name="platnosc" label="Karnet" value="2" ></sm-radio>
+                    </div>
+                </div>
+                <div ng-if="vm.platnosc === 1">
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Kosmetyki:</label>
+                            <input type="number" ng-model="vm.kosmetyki" name="kosmetyki">
+                        </div>
+                    </div>
+                    <!--<h3 ng-if="!vm.kosmetyki">Do zapłaty: {{vm.edytowanaRezerwacja.end - vm.edytowanaRezerwacja.start * vm.confirmation.lozko[0].cena).toFixed(2)}} zł</h3>-->
+                    <!--<h3 ng-if="vm.kosmetyki">Do zapłaty: {{((vm.czasOpalania * vm.confirmation.lozko[0].cena)+ vm.kosmetyki).toFixed(2)}} zł</h3>-->
+                    <br>
+                </div>
+            </div>
+
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">
+            Anuluj
+        </div>
+        <div class="ui red deny button" ng-class="{'disabled': vm.editReservationForm.$invalid}">
+            Usuń rezerwacje
+        </div>
+        <div class="ui green positive button" ng-class="{'disabled': vm.editReservationForm.$invalid}">
+            Zapisz rezerwacje
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
 
 <div ng-if="!vm.loaded" class="ui grid centered padded">
     <div class="middle aligned column">
@@ -79,12 +151,12 @@
                                 <div class="timetable-time-axis-inside" ng-repeat="hour in vm.momentHoursArray" style="height:{{100/vm.momentHoursArray.length}}%">
                                     <div class="ui raised segment reservation" ng-repeat="reservat in hour.resevations" ng-if="reservat.equipment.name === equip.name" style="text-align:left" ng-class="vm.getReservationClass(reservat)" ng-style="{'height':reservat.style.height,'top':reservat.style.top}" >
                                         <h2 class="ui tiny header">
-                                            {{reservat.customer.name || 'Anonimowy Klient'}} {{reservat.customer.surname}}
-                                            <div class="sub header">{{reservat.customer.telephone}}</div>
-                                            <div class="sub orange header" style="text-align:right">{{vm.formatReservationTimeStamp(reservat.reservation.start)}} - {{vm.formatReservationTimeStamp(reservat.reservation.end)}}</div>
+                                            {{vm.formatReservationTimeStamp(reservat.reservation.start)}} - {{vm.formatReservationTimeStamp(reservat.reservation.end)}}
+                                            <div class="sub header"> {{reservat.customer.name || 'Anonimowy Klient'}} {{reservat.customer.surname}}</div>
+                                            <div class="sub orange header" style="text-align:right">{{reservat.customer.telephone}}</div>
                                         </h2>
                                         <a class="ui blue right corner label reservation-edit-button">
-                                            <i class="edit icon"></i>
+                                            <i class="edit icon" ng-click="vm.editReservation(reservat ,reservat.reservation)"></i>
                                         </a>
                                     </div>
                                 </div>

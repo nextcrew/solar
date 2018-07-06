@@ -18,6 +18,11 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     vm.today = moment();
     vm.startDate = vm.today;
 
+    vm.statuses = [
+        {name:'Nowa'},
+        {name:'Wykonana'},
+        {name:'Archiwalna'}
+    ];
 
     vm.filters = {
 
@@ -27,7 +32,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
 
 
     vm.newReservation = {
-        customer:null,
+        customer:'Anonimowy Klient',
         status:'Nowa',
         lozko:null,
         start:null,
@@ -40,6 +45,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
     vm.getReservationClass = getReservationClass;
     vm.formatReservationTimeStamp = formatReservationTimeStamp;
     vm.calculateHourPosition = calculateHourPosition;
+    vm.editReservation = editReservation;
 
 
     $scope.$watch(function(){
@@ -117,7 +123,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
                 return 'green';
                 break;
 
-            case 'Stara':
+            case 'Archiwalna':
                 return 'red';
                 break;
         }
@@ -150,7 +156,7 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
                 vm.reservations.$add(vm.newReservation);
                 Logs.addLog('Dodawanie', 'Dodano nową rezerwacje');
                 vm.newReservation = {
-                    customer:null,
+                    customer:'Anonimowy Klient',
                     status:null,
                     lozko:null,
                     start:null,
@@ -184,9 +190,33 @@ function ReservationsCtrl($scope , $firebaseArray , Logs) {
             });
 
     }
+
+    function editReservation(model, reservation){
+        vm.copiedModel = model;
+        console.log(model);
+        vm.edytowanaRezerwacja = angular.copy(reservation);
+        $('.ui.editReservation.fullscreen.modal').modal({
+            closable  : false,
+            onApprove : function() {
+                // vm.newReservation.start = vm.newReservation.start.valueOf();
+                // vm.newReservation.end = vm.newReservation.end.valueOf();
+                // vm.reservations.$add(vm.newReservation);
+                // Logs.addLog('Dodawanie', 'Dodano nową rezerwacje');
+                // vm.newReservation = {
+                //     customer:'Anonimowy Klient',
+                //     status:null,
+                //     lozko:null,
+                //     start:null,
+                //     end:null
+                // };
+                // prepareData();
+            }
+        }).modal('show');
+
+    };
+
     calculateTimeBar();
     setInterval(calculateTimeBar(),6000);
-
 
 
 

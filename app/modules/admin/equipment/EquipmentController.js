@@ -1,6 +1,6 @@
 'use strict';
 
-function EquipmentCtrl($scope , $firebaseArray , Logs) {
+function EquipmentCtrl($scope , $firebaseArray , Logs , ModalService, CONSTANTS) {
     var vm = this;
     vm.loaded = true;
     vm.equipmentRef = firebase.database().ref().child("Equipment");
@@ -11,7 +11,8 @@ function EquipmentCtrl($scope , $firebaseArray , Logs) {
     /////
     vm.addEquipment = addEquipment;
     vm.removeEquipment = removeEquipment;
-    vm.editEquipment = editEquipment
+    vm.editEquipment = editEquipment;
+    vm.removeModal = removeModal;
 
 
 
@@ -64,6 +65,25 @@ function EquipmentCtrl($scope , $firebaseArray , Logs) {
         }).modal('show');
     }
 
+    function removeModal(data){
+        ModalService.showModal({
+            appendElement:  $('.ui .dimmer .modals'),
+            template: CONSTANTS.modalTemplates.remove,
+            controller: function ($scope, close) {
+                $scope.dismissModal = function (result) {
+                    close(result, 200);
+                };
+            }
+        }).then(function (modal) {
+            $(modal.element).modal({closable:false}).modal('show');
+            modal.close.then(function(result) {
+                if (result){
+                    removeEquipment(data);
+                }
+            });
+        });
+    }
+
 
 
 
@@ -71,5 +91,5 @@ function EquipmentCtrl($scope , $firebaseArray , Logs) {
 
 }
 
-EquipmentCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs'];
+EquipmentCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs', 'ModalService', 'CONSTANTS'];
 module.exports = EquipmentCtrl;

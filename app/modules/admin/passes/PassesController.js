@@ -1,10 +1,9 @@
 'use strict';
 
-function PassesCtrl($scope , $firebaseArray , Logs , ModalService) {
+function PassesCtrl($scope , $firebaseArray , Logs , ModalService , CONSTANTS) {
     var vm = this;
     vm.loaded = true;
-    console.log(ModalService);
-    vm.showModal = showModal;
+    vm.removeModal = removeModal;
     vm.addPass = addPass;
     vm.editPass = editPass;
     vm.removeCustomer = removeCustomer;
@@ -40,17 +39,22 @@ function PassesCtrl($scope , $firebaseArray , Logs , ModalService) {
     };
 
 
-    function showModal(){
+    function removeModal(data){
         ModalService.showModal({
-            template: '<div class="ui basic modal uuuu"><div class="content"><p>Czy napewno chcesz się wylogować?</p></div><div class="actions"><div class="ui red basic cancel inverted button"></div><div class="ui green ok inverted button">Tak</div></div></div>',
+            appendElement:  $('.ui .dimmer .modals'),
+            template: CONSTANTS.modalTemplates.remove,
             controller: function ($scope, close) {
                 $scope.dismissModal = function (result) {
-                    close(result, 200); // close, but give 200ms for bootstrap to animate
+                    close(result, 200);
                 };
             }
         }).then(function (modal) {
-            //console.log(modal.element.show());
-            modal.element.modal().modal('show');
+            $(modal.element).modal({closable:false}).modal('show');
+            modal.close.then(function(result) {
+                if (result){
+                    removePass(data);
+                }
+            });
         });
     }
 
@@ -127,5 +131,5 @@ function PassesCtrl($scope , $firebaseArray , Logs , ModalService) {
     }
 }
 
-PassesCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs' , 'ModalService'];
+PassesCtrl.$inject = ['$scope', '$firebaseArray' , 'Logs' , 'ModalService' , 'CONSTANTS'];
 module.exports = PassesCtrl;
